@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>한빛사회적협동조합 홈페이지 제작 요청서</title>
+  <meta name="description" content="한빛사회적협동조합 홈페이지 제작 요청서 접수 페이지" />
+  <style>
+    :root {
+      --primary: #1946b9;
+      --primary-dark: #143894;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --subtext: #6b7280;
+      --line: #dbe2ea;
+      --danger: #b91c1c;
+      --shadow: 0 12px 32px rgba(25, 70, 185, 0.08);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif; color: var(--text); background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 220px); }
+    body { line-height: 1.6; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 40px 20px 80px; }
+    .hero { background: linear-gradient(135deg, var(--primary) 0%, #3e69d8 100%); color: #fff; border-radius: 28px; padding: 36px 28px; box-shadow: var(--shadow); margin-bottom: 24px; }
+    .hero-badge { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .03em; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.18); padding: 8px 12px; border-radius: 999px; margin-bottom: 14px; }
+    .hero h1 { margin: 0 0 10px; font-size: 34px; line-height: 1.25; }
+    .hero p { margin: 0; font-size: 16px; opacity: .95; }
+    .notice { background: #fff; border: 1px solid #d8e3ff; border-radius: var(--radius); padding: 18px 20px; margin-bottom: 24px; box-shadow: var(--shadow); }
+    .notice strong { color: var(--primary-dark); }
+    form { display: grid; gap: 22px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+    .card h2 { margin: 0 0 18px; font-size: 22px; color: var(--primary-dark); }
+    .section-desc { margin: -4px 0 18px; color: var(--subtext); font-size: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field label { font-size: 15px; font-weight: 700; }
+    .required::after { content: " *"; color: var(--danger); font-weight: 800; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], input[type="date"], select, textarea { width: 100%; padding: 14px 15px; border: 1px solid var(--line); border-radius: 12px; font-size: 15px; background: #fff; color: var(--text); transition: border-color .2s ease, box-shadow .2s ease; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(25, 70, 185, .12); }
+    textarea { min-height: 120px; resize: vertical; }
+    .check-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+    .check-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fbfcff; }
+    .check-item input { transform: translateY(1px); }
+    .helper { font-size: 13px; color: var(--subtext); margin-top: -2px; }
+    .agreement { display: flex; gap: 12px; align-items: flex-start; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: #f9fbff; }
+    .submit-wrap { display: flex; justify-content: center; margin-top: 8px; }
+    .submit-btn { width: 100%; max-width: 320px; border: 0; border-radius: 14px; background: var(--primary); color: #fff; font-size: 17px; font-weight: 800; padding: 16px 20px; cursor: pointer; box-shadow: 0 14px 24px rgba(25, 70, 185, .18); transition: transform .15s ease, background .2s ease; }
+    .submit-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .footer-note { margin-top: 18px; text-align: center; font-size: 13px; color: var(--subtext); }
+    @media (max-width: 860px) {
+      .grid-2, .check-group { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 28px; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-badge">Website Brief Form</div>
+      <h1>한빛사회적협동조합 홈페이지 제작 요청서</h1>
+      <p>아래 내용을 작성해 주시면, 전달해주신 정보를 바탕으로 사이트 구조와 제작 방향을 검토하여 보다 정확한 제안 및 견적 안내를 드립니다.</p>
+    </section>
+
+    <section class="notice">
+      <strong>안내</strong><br />
+      본 요청서는 홈페이지 제작 방향을 파악하기 위한 사전 정보 수집용입니다.
+      제공된 자료와 작성 내용에 따라 제작 범위와 일정이 달라질 수 있습니다.
+    </section>
+
+    <!-- 반드시 수정: YOUR_FORMSPREE_ID -->
+    <form action="https://formspree.io/f/mqeybren" method="POST">
+      <input type="hidden" name="_subject" value="한빛사회적협동조합 홈페이지 제작 요청서 접수" />
+      <input type="hidden" name="_language" value="ko" />
+      <input type="hidden" name="_next" value="https://wanghyun.github.io/hanbit-request-form/thanks.html" />
+
+      <section class="card">
+        <h2>1. 기관 기본 정보</h2>
+        <p class="section-desc">기본적인 기관 정보와 담당자 정보를 작성해 주세요.</p>
+        <div class="grid-2">
+          <div class="field"><label for="org_name" class="required">기관명</label><input type="text" id="org_name" name="기관명" required /></div>
+          <div class="field"><label for="ceo_name">대표자명</label><input type="text" id="ceo_name" name="대표자명" /></div>
+          <div class="field"><label for="manager_name" class="required">담당자 이름</label><input type="text" id="manager_name" name="담당자 이름" required /></div>
+          <div class="field"><label for="contact_phone" class="required">연락처</label><input type="tel" id="contact_phone" name="연락처" placeholder="예: 010-1234-5678" required /></div>
+          <div class="field"><label for="email" class="required">이메일</label><input type="email" id="email" name="이메일" placeholder="example@email.com" required /></div>
+          <div class="field"><label for="founded_year">설립년도</label><input type="number" id="founded_year" name="설립년도" placeholder="예: 2020" /></div>
+        </div>
+        <div class="field" style="margin-top:16px;">
+          <label for="org_intro">기관 소개</label>
+          <textarea id="org_intro" name="기관 소개" placeholder="기관 소개, 운영 목적, 주요 활동 등을 자유롭게 작성해 주세요."></textarea>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>2. 홈페이지 제작 목적</h2>
+        <p class="section-desc">홈페이지를 왜 만들려고 하는지, 무엇을 가장 중요하게 보는지 작성해 주세요.</p>
+        <div class="field"><label for="goal" class="required">홈페이지 제작 목적</label><textarea id="goal" name="홈페이지 제작 목적" required placeholder="예: 기관 홍보, 사업 소개, 조합원 모집, 후원 안내, 공지 및 소식 전달"></textarea></div>
+        <div class="field"><label for="main_message">가장 강조하고 싶은 내용</label><textarea id="main_message" name="가장 강조하고 싶은 내용" placeholder="예: 사회적 가치, 지역사회 기여, 주요 사업, 신뢰감 있는 기관 소개"></textarea></div>
+        <div class="field"><label for="target_users">주요 방문 대상</label><input type="text" id="target_users" name="주요 방문 대상" placeholder="예: 조합원, 지역주민, 후원자, 공공기관, 일반 방문자" /></div>
+      </section>
+
+      <section class="card">
+        <h2>3. 희망 메뉴 구조</h2>
+        <p class="section-desc">원하는 메뉴나 참고할 만한 사이트 구조가 있다면 적어 주세요.</p>
+        <div class="field"><label for="menu_structure">희망 메뉴 구조</label><textarea id="menu_structure" name="희망 메뉴 구조" placeholder="예: 조합소개 / 사업소개 / 공지사항 / 활동소식 / 자료실 / 문의하기"></textarea></div>
+        <div class="field"><label for="reference_site">참고 사이트 주소</label><input type="url" id="reference_site" name="참고 사이트 주소" placeholder="https://example.com" /></div>
+      </section>
+
+      <section class="card">
+        <h2>4. 필요한 기능</h2>
+        <p class="section-desc">필요한 기능에 체크해 주세요. 여러 개 선택 가능합니다.</p>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="공지사항 게시판" /> 공지사항 게시판</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="활동 사진 갤러리" /> 활동 사진 갤러리</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="자료 다운로드" /> 자료 다운로드</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="문의 게시판" /> 문의 게시판</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="온라인 신청서" /> 온라인 신청서</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="조합원 가입 안내" /> 조합원 가입 안내</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="팝업 공지" /> 팝업 공지</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="SNS 연동" /> SNS 연동</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="달력/일정 안내" /> 달력/일정 안내</label>
+          <label class="check-item"><input type="checkbox" name="필요 기능[]" value="후원 안내" /> 후원 안내</label>
+        </div>
+        <div class="field" style="margin-top:16px;"><label for="custom_features">기타 필요한 기능</label><textarea id="custom_features" name="기타 필요한 기능" placeholder="위에 없는 기능이 있다면 자유롭게 적어 주세요."></textarea></div>
+      </section>
+
+      <section class="card">
+        <h2>5. 디자인 방향</h2>
+        <p class="section-desc">원하는 분위기, 색상, 느낌을 알려주시면 디자인 방향을 잡는 데 도움이 됩니다.</p>
+        <div class="grid-2">
+          <div class="field">
+            <label for="mood">희망 분위기</label>
+            <select id="mood" name="희망 분위기">
+              <option value="">선택해 주세요</option>
+              <option>깔끔하고 신뢰감 있는 공공기관 스타일</option>
+              <option>따뜻하고 친근한 복지기관 스타일</option>
+              <option>현대적이고 전문적인 기업형 스타일</option>
+              <option>심플하고 최소한의 정보 중심 스타일</option>
+            </select>
+          </div>
+          <div class="field"><label for="color">선호 색상</label><input type="text" id="color" name="선호 색상" placeholder="예: 파랑, 초록, 따뜻한 베이지 톤" /></div>
+        </div>
+        <div class="field" style="margin-top:16px;"><label for="logo_status">로고 보유 여부 및 디자인 자료</label><textarea id="logo_status" name="로고 및 디자인 자료" placeholder="예: 로고 있음 / CI 없음 / 기존 브로셔 있음 / 리플렛 있음"></textarea></div>
+      </section>
+
+      <section class="card">
+        <h2>6. 보유 자료</h2>
+        <p class="section-desc">이미 가지고 있는 자료를 알려주시면 작업 일정과 범위를 더 정확히 잡을 수 있습니다.</p>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" name="보유 자료[]" value="기관 로고" /> 기관 로고</label>
+          <label class="check-item"><input type="checkbox" name="보유 자료[]" value="기관 소개글" /> 기관 소개글</label>
+          <label class="check-item"><input type="checkbox" name="보유 자료[]" value="사업 소개 자료" /> 사업 소개 자료</label>
+          <label class="check-item"><input type="checkbox" name="보유 자료[]" value="사진 자료" /> 사진 자료</label>
+          <label class="check-item"><input type="checkbox" name="보유 자료[]" value="홍보 영상" /> 홍보 영상</label>
+          <label class="check-item"><input type="checkbox" name="보유 자료[]" value="기존 홈페이지 자료" /> 기존 홈페이지 자료</label>
+          <label class="check-item"><input type="checkbox" name="보유 자료[]" value="브로셔/PDF 자료" /> 브로셔/PDF 자료</label>
+          <label class="check-item"><input type="checkbox" name="보유 자료[]" value="없음" /> 아직 준비된 자료 없음</label>
+        </div>
+        <div class="field" style="margin-top:16px;"><label for="materials_note">자료 관련 추가 설명</label><textarea id="materials_note" name="자료 관련 추가 설명" placeholder="예: 사진은 있으나 정리가 안 되어 있음 / 소개문구는 추후 전달 예정"></textarea></div>
+      </section>
+
+      <section class="card">
+        <h2>7. 예산 및 일정</h2>
+        <p class="section-desc">예산과 희망 일정을 알려주시면 현실적인 제안에 도움이 됩니다.</p>
+        <div class="grid-2">
+          <div class="field">
+            <label for="budget">예산 범위</label>
+            <select id="budget" name="예산 범위">
+              <option value="">선택해 주세요</option>
+              <option>100만원 이하</option>
+              <option>100만~200만원</option>
+              <option>200만~300만원</option>
+              <option>300만~500만원</option>
+              <option>500만원 이상</option>
+              <option>미정</option>
+            </select>
+          </div>
+          <div class="field"><label for="launch_date">희망 오픈일</label><input type="date" id="launch_date" name="희망 오픈일" /></div>
+        </div>
+        <div class="field" style="margin-top:16px;"><label for="schedule_note">일정 관련 메모</label><textarea id="schedule_note" name="일정 관련 메모" placeholder="예: 5월 중 오픈 희망 / 내부 검토 기간 필요 / 행사 전에 오픈 필요"></textarea></div>
+      </section>
+
+      <section class="card">
+        <h2>8. 기타 요청사항</h2>
+        <p class="section-desc">기타 요청하실 내용이 있다면 자유롭게 작성해 주세요.</p>
+        <div class="field"><label for="etc">기타 요청사항</label><textarea id="etc" name="기타 요청사항" placeholder="추가 요청사항, 참고사항, 내부 검토 포인트 등을 적어 주세요."></textarea></div>
+      </section>
+
+      <section class="card">
+        <h2>9. 개인정보 수집 안내</h2>
+        <p class="section-desc">문의 응대 및 제작 상담을 위한 최소한의 정보만 수집합니다.</p>
+        <label class="agreement">
+          <input type="checkbox" name="개인정보 수집 동의" value="동의" required />
+          <span>작성한 정보는 홈페이지 제작 상담 및 회신을 위한 용도로만 사용되며, 민감한 개인정보는 입력하지 않습니다. 개인정보 수집 및 이용에 동의합니다.</span>
+        </label>
+        <div class="helper">필수 동의 항목입니다.</div>
+      </section>
+
+      <div class="submit-wrap"><button type="submit" class="submit-btn">요청서 제출하기</button></div>
+      <div class="footer-note">제출 후 접수 안내 페이지로 이동합니다.</div>
+    </form>
+  </div>
+</body>
+</html>
