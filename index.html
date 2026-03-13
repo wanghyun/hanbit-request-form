@@ -241,7 +241,6 @@
       color: var(--subtext);
     }
 
-    /* 외주 유형별 추가 질문 박스 */
     .conditional-section {
       display: none;
       border: 1px dashed #b8c8f0;
@@ -298,13 +297,10 @@
 
     <!--
       역할:
-      - action: Formspree 전송 주소
-      - _next: 제출 후 이동할 완료 페이지
-      - 현재 wanghyun GitHub Pages + Formspree 주소 기준으로 설정
+      - Apps Script 웹앱으로 직접 전송
+      - _next hidden 값으로 완료 페이지 이동
     -->
-    <form action="https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyAVnytMDzyRZKsT3L79Hdx9qBjdT_4V1pEBNHyIb49K_0ACurG8uozlxBC4ZXPuFUI/exec" method="POST">
-      <input type="hidden" name="_subject" value="공용 홈페이지 제작 요청서 접수" />
-      <input type="hidden" name="_language" value="ko" />
+    <form action="https://script.google.com/macros/s/AKfycbyAVnytMDzyRZKsT3L79Hdx9qBjdT_4V1pEBNHyIb49K_0ACurG8uozlxBC4ZXPuFUI/exec" method="POST">
       <input type="hidden" name="_next" value="https://wanghyun.github.io/hanbit-request-form/thanks.html" />
 
       <section class="card">
@@ -359,10 +355,6 @@
             </select>
           </div>
 
-          <!--
-            역할:
-            - 이 선택값에 따라 아래 추가 질문 영역이 자동으로 바뀜
-          -->
           <div class="field">
             <label for="site_type" class="required">사이트 유형</label>
             <select id="site_type" name="사이트 유형" required>
@@ -415,15 +407,10 @@
         </div>
       </section>
 
-      <!--
-        역할:
-        - 사이트 유형 선택 시 자동으로 맞는 질문만 열리는 영역
-      -->
       <section class="card">
         <h2>3. 외주 유형별 추가 질문</h2>
         <p class="section-desc">사이트 유형에 따라 필요한 질문이 자동으로 표시됩니다.</p>
 
-        <!-- 기업/기관 홈페이지 -->
         <div class="conditional-section" data-type="corporate">
           <div class="conditional-title">기업/기관 홈페이지 추가 질문</div>
           <div class="grid-2">
@@ -438,7 +425,6 @@
           </div>
         </div>
 
-        <!-- 랜딩페이지 -->
         <div class="conditional-section" data-type="landing">
           <div class="conditional-title">랜딩페이지 추가 질문</div>
           <div class="grid-2">
@@ -457,7 +443,6 @@
           </div>
         </div>
 
-        <!-- 쇼핑몰 -->
         <div class="conditional-section" data-type="shop">
           <div class="conditional-title">쇼핑몰 추가 질문</div>
           <div class="grid-2">
@@ -476,7 +461,6 @@
           </div>
         </div>
 
-        <!-- 포트폴리오 -->
         <div class="conditional-section" data-type="portfolio">
           <div class="conditional-title">포트폴리오 추가 질문</div>
           <div class="grid-2">
@@ -491,7 +475,6 @@
           </div>
         </div>
 
-        <!-- 커뮤니티형 -->
         <div class="conditional-section" data-type="community">
           <div class="conditional-title">커뮤니티형 사이트 추가 질문</div>
           <div class="grid-2">
@@ -506,7 +489,6 @@
           </div>
         </div>
 
-        <!-- 예약/상담 중심 -->
         <div class="conditional-section" data-type="reservation">
           <div class="conditional-title">예약/상담 중심 사이트 추가 질문</div>
           <div class="grid-2">
@@ -521,7 +503,6 @@
           </div>
         </div>
 
-        <!-- 기타 -->
         <div class="conditional-section" data-type="other">
           <div class="conditional-title">기타 유형 추가 설명</div>
           <div class="field">
@@ -685,11 +666,6 @@
     </form>
   </div>
 
-  <!--
-    역할:
-    - 사이트 유형 선택값을 읽어서
-    - 해당하는 추가 질문 영역만 보이게 처리
-  -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const siteTypeSelect = document.getElementById("site_type");
