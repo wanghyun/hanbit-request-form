@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>견적 조회</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+    .top-card, .info-card {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .top-title {
+      font-size: 30px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .top-desc {
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+    .quote-id {
+      display: inline-block;
+      padding: 10px 16px;
+      background: #eef4ff;
+      color: #1946b9;
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .price-box {
+      border: 1px solid #dbe4ef;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+    }
+    .price-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .price-value {
+      font-size: 28px;
+      font-weight: 900;
+      color: #1946b9;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: #1946b9;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .info-item {
+      border: 1px solid #e4e9f1;
+      border-radius: 16px;
+      padding: 16px;
+      background: #fafcff;
+    }
+    .info-item .label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    .info-item .value {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: pre-line;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      border: 1px solid #d9e1ec;
+      background: #fff;
+      color: #1f2937;
+    }
+    .btn-primary {
+      background: #1946b9;
+      border-color: #1946b9;
+      color: #fff;
+    }
+    .loading, .error {
+      padding: 40px 20px;
+      text-align: center;
+      color: #6b7280;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
+    }
+    @media (max-width: 860px) {
+      .price-grid,
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="loading" class="loading">견적 정보를 불러오는 중입니다...</div>
+    <div id="error" class="error" style="display:none;">견적 정보를 찾을 수 없습니다.</div>
+
+    <div id="content" style="display:none;">
+      <div class="top-card">
+        <div class="top-title">견적 확인</div>
+        <div class="top-desc">자동 생성된 예상 견적 정보와 PDF를 다시 확인할 수 있습니다.</div>
+        <div class="quote-id" id="quoteIdBadge">견적번호</div>
+
+        <div class="price-grid">
+          <div class="price-box">
+            <div class="price-label">공급가액</div>
+            <div class="price-value" id="supplyAmountText">0원</div>
+          </div>
+          <div class="price-box">
+            <div class="price-label">부가가치세(VAT)</div>
+            <div class="price-value" id="vatAmountText">0원</div>
+          </div>
+          <div class="price-box">
+            <div class="price-label">총 견적(VAT 포함)</div>
+            <div class="price-value" id="totalAmountText">0원</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a href="#" target="_blank" id="pdfBtn" class="btn">PDF 견적서 보기</a>
+          <a href="#" id="reserveBtn" class="btn btn-primary">상담 예약하기</a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="section-title">기본 정보</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="label">업체명</div>
+            <div class="value" id="companyNameText">-</div>
+          </div>
+          <div class="info-item">
+            <div class="label">사이트 유형</div>
+            <div class="value" id="siteTypeText">-</div>
+          </div>
+          <div class="info-item">
+            <div class="label">선택 기능</div>
+            <div class="value" id="featuresText">-</div>
+          </div>
+          <div class="info-item">
+            <div class="label">유형별 추가 요청</div>
+            <div class="value" id="detailText">-</div>
+          </div>
+          <div class="info-item">
+            <div class="label">상태</div>
+            <div class="value" id="statusText">-</div>
+          </div>
+          <div class="info-item">
+            <div class="label">문의번호</div>
+            <div class="value" id="inquiryIdText">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEBAPP_URL';
+
+    function formatWon(num) {
+      return Number(num || 0).toLocaleString('ko-KR') + '원';
+    }
+
+    const params = new URLSearchParams(location.search);
+    const quoteId = params.get('quote') || '';
+
+    async function loadQuote() {
+      if (!quoteId) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        return;
+      }
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL + '?mode=quote&quote=' + encodeURIComponent(quoteId));
+        const data = await res.json();
+
+        document.getElementById('loading').style.display = 'none';
+
+        if (!data.success) {
+          document.getElementById('error').style.display = 'block';
+          return;
+        }
+
+        const quote = data.quote || {};
+        const inquiry = data.inquiry || {};
+
+        document.getElementById('content').style.display = 'block';
+
+        document.getElementById('quoteIdBadge').textContent = quote.quote_id || quoteId;
+        document.getElementById('supplyAmountText').textContent = formatWon(quote.supply_amount);
+        document.getElementById('vatAmountText').textContent = formatWon(quote.vat_amount);
+        document.getElementById('totalAmountText').textContent = formatWon(quote.total_price);
+
+        document.getElementById('companyNameText').textContent = quote.company_name || inquiry.company_name || '-';
+        document.getElementById('siteTypeText').textContent = quote.site_type_label || '-';
+        document.getElementById('featuresText').textContent = quote.selected_features || inquiry.features || '-';
+        document.getElementById('detailText').textContent = quote.site_specific_detail || inquiry.site_specific_detail || '-';
+        document.getElementById('statusText').textContent = quote.status || '-';
+        document.getElementById('inquiryIdText').textContent = quote.inquiry_id || '-';
+
+        document.getElementById('pdfBtn').href = quote.pdf_url || '#';
+        document.getElementById('reserveBtn').href = './reserve.html?quote=' + encodeURIComponent(quote.quote_id || quoteId);
+
+      } catch (err) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+      }
+    }
+
+    loadQuote();
+  </script>
+</body>
+</html>
