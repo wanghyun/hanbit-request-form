@@ -3,99 +3,167 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>견적 조회</title>
+  <title>상담 예약</title>
+  <meta name="description" content="견적 정보를 바탕으로 상담 일정을 예약하세요." />
   <style>
+    :root {
+      --primary: #1946b9;
+      --primary-dark: #143894;
+      --primary-light: #eef4ff;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --subtext: #6b7280;
+      --line: #dbe4ef;
+      --shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
-      background: #f5f7fb;
-      color: #1f2937;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
     }
+
     .wrap {
-      max-width: 980px;
+      max-width: 920px;
       margin: 60px auto;
-      padding: 0 20px;
+      padding: 0 20px 40px;
     }
-    .top-card, .info-card {
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
-      padding: 28px;
+
+    .hero-card,
+    .form-card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 30px;
       margin-bottom: 20px;
     }
-    .top-title {
-      font-size: 30px;
+
+    .hero-title {
+      font-size: 32px;
       font-weight: 900;
-      margin-bottom: 8px;
+      margin: 0 0 10px;
+      line-height: 1.2;
     }
-    .top-desc {
-      color: #6b7280;
-      margin-bottom: 24px;
+
+    .hero-desc {
+      color: var(--subtext);
+      margin: 0 0 24px;
+      font-size: 15px;
     }
-    .quote-id {
-      display: inline-block;
-      padding: 10px 16px;
-      background: #eef4ff;
-      color: #1946b9;
-      font-size: 14px;
-      font-weight: 800;
-      border-radius: 999px;
-      margin-bottom: 20px;
-    }
-    .price-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .price-box {
-      border: 1px solid #dbe4ef;
+
+    .quote-box {
+      padding: 18px 20px;
       border-radius: 18px;
-      padding: 18px;
-      background: #fff;
-    }
-    .price-label {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 8px;
-    }
-    .price-value {
-      font-size: 28px;
-      font-weight: 900;
-      color: #1946b9;
-    }
-    .section-title {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 16px;
-      color: #1946b9;
-    }
-    .info-grid {
+      background: #f8fbff;
+      border: 1px solid #d9e6ff;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+      gap: 10px;
     }
-    .info-item {
+
+    .quote-box div {
+      font-size: 14px;
+    }
+
+    .quote-box strong {
+      color: var(--primary);
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 900;
+      margin: 0 0 18px;
+      color: var(--primary);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 15px;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(25, 70, 185, 0.10);
+    }
+
+    .readonly-box {
+      padding: 14px 15px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      font-size: 15px;
+      color: var(--text);
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+    }
+
+    .note {
+      margin-top: 18px;
+      color: var(--subtext);
+      font-size: 13px;
+      line-height: 1.7;
+      padding: 16px 18px;
       border: 1px solid #e4e9f1;
       border-radius: 16px;
-      padding: 16px;
       background: #fafcff;
     }
-    .info-item .label {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 6px;
-    }
-    .info-item .value {
-      font-size: 15px;
-      font-weight: 700;
-      white-space: pre-line;
-    }
+
     .actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
       margin-top: 24px;
     }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -108,24 +176,52 @@
       border: 1px solid #d9e1ec;
       background: #fff;
       color: #1f2937;
+      cursor: pointer;
+      transition: 0.2s ease;
     }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
     .btn-primary {
-      background: #1946b9;
-      border-color: #1946b9;
+      background: var(--primary);
+      border-color: var(--primary);
       color: #fff;
+      box-shadow: 0 12px 24px rgba(25, 70, 185, 0.18);
     }
-    .loading, .error {
-      padding: 40px 20px;
-      text-align: center;
-      color: #6b7280;
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .loading,
+    .error {
       background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 38px 24px;
+      text-align: center;
+      color: var(--subtext);
     }
+
+    .error {
+      display: none;
+      color: #b42318;
+    }
+
     @media (max-width: 860px) {
-      .price-grid,
-      .info-grid {
+      .form-grid {
         grid-template-columns: 1fr;
+      }
+
+      .hero-card,
+      .form-card {
+        padding: 22px 18px;
+      }
+
+      .hero-title {
+        font-size: 28px;
       }
     }
   </style>
@@ -133,81 +229,103 @@
 <body>
   <div class="wrap">
     <div id="loading" class="loading">견적 정보를 불러오는 중입니다...</div>
-    <div id="error" class="error" style="display:none;">견적 정보를 찾을 수 없습니다.</div>
+    <div id="error" class="error">견적 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</div>
 
     <div id="content" style="display:none;">
-      <div class="top-card">
-        <div class="top-title">견적 확인</div>
-        <div class="top-desc">자동 생성된 예상 견적 정보와 PDF를 다시 확인할 수 있습니다.</div>
-        <div class="quote-id" id="quoteIdBadge">견적번호</div>
+      <div class="hero-card">
+        <h1 class="hero-title">상담 예약</h1>
+        <p class="hero-desc">
+          견적 내용을 바탕으로 상담 일정을 예약할 수 있습니다.
+          담당자가 확인 후 순차적으로 확정 안내를 드립니다.
+        </p>
 
-        <div class="price-grid">
-          <div class="price-box">
-            <div class="price-label">공급가액</div>
-            <div class="price-value" id="supplyAmountText">0원</div>
-          </div>
-          <div class="price-box">
-            <div class="price-label">부가가치세(VAT)</div>
-            <div class="price-value" id="vatAmountText">0원</div>
-          </div>
-          <div class="price-box">
-            <div class="price-label">총 견적(VAT 포함)</div>
-            <div class="price-value" id="totalAmountText">0원</div>
-          </div>
-        </div>
-
-        <div class="actions">
-          <a href="#" target="_blank" id="pdfBtn" class="btn">PDF 견적서 보기</a>
-          <a href="#" id="reserveBtn" class="btn btn-primary">상담 예약하기</a>
+        <div class="quote-box">
+          <div><strong>견적번호</strong> : <span id="quoteIdText">확인 중...</span></div>
+          <div><strong>업체명</strong> : <span id="companyNameText">확인 중...</span></div>
+          <div><strong>담당자</strong> : <span id="managerNameText">확인 중...</span></div>
+          <div><strong>연락처</strong> : <span id="phoneText">확인 중...</span></div>
         </div>
       </div>
 
-      <div class="info-card">
-        <div class="section-title">기본 정보</div>
-        <div class="info-grid">
-          <div class="info-item">
-            <div class="label">업체명</div>
-            <div class="value" id="companyNameText">-</div>
+      <div class="form-card">
+        <h2 class="section-title">예약 정보 입력</h2>
+
+        <form id="reserveForm" method="post" action="https://script.google.com/macros/s/AKfycbz4402W4vt9zmj3s3zEmhQogLCMvYByzvdAKlrqWr8LQ0x69cjS3gg-6PvnNM2VAcs/exec">
+          <input type="hidden" name="action_type" value="consult_reservation">
+          <input type="hidden" name="quote_id" id="quoteIdInput">
+          <input type="hidden" name="inquiry_id" id="inquiryIdInput">
+          <input type="hidden" name="company_name" id="companyNameInput">
+          <input type="hidden" name="manager_name" id="managerNameInput">
+          <input type="hidden" name="phone" id="phoneInput">
+          <input type="hidden" name="email" id="emailInput">
+          <input type="hidden" name="_next" value="https://wanghyun.github.io/hanbit-request-form/reserve-complete.html">
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="preferred_date">희망 상담일</label>
+              <input type="date" id="preferred_date" name="preferred_date" required>
+            </div>
+
+            <div class="field">
+              <label for="preferred_time">희망 시간대</label>
+              <select id="preferred_time" name="preferred_time" required>
+                <option value="">선택해주세요</option>
+                <option value="오전 10:00 ~ 11:00">오전 10:00 ~ 11:00</option>
+                <option value="오전 11:00 ~ 12:00">오전 11:00 ~ 12:00</option>
+                <option value="오후 1:00 ~ 2:00">오후 1:00 ~ 2:00</option>
+                <option value="오후 2:00 ~ 3:00">오후 2:00 ~ 3:00</option>
+                <option value="오후 3:00 ~ 4:00">오후 3:00 ~ 4:00</option>
+                <option value="오후 4:00 ~ 5:00">오후 4:00 ~ 5:00</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="consult_type">상담 방식</label>
+              <select id="consult_type" name="consult_type" required>
+                <option value="">선택해주세요</option>
+                <option value="전화 상담">전화 상담</option>
+                <option value="줌 미팅">줌 미팅</option>
+                <option value="카카오톡 상담">카카오톡 상담</option>
+                <option value="대면 상담">대면 상담</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>연락 가능한 번호</label>
+              <div class="readonly-box" id="phoneReadonly">확인 중...</div>
+            </div>
+
+            <div class="field full">
+              <label for="message">상담 시 미리 전달할 내용</label>
+              <textarea id="message" name="message" placeholder="예: 예산 범위 조정, 일정 협의, 필요한 기능 추가 문의"></textarea>
+            </div>
           </div>
-          <div class="info-item">
-            <div class="label">사이트 유형</div>
-            <div class="value" id="siteTypeText">-</div>
+
+          <div class="note">
+            예약 접수 후 담당자가 내용을 확인하여 확정 안내를 드립니다.<br>
+            예약 상황에 따라 희망 일정은 조정될 수 있습니다.
           </div>
-          <div class="info-item">
-            <div class="label">선택 기능</div>
-            <div class="value" id="featuresText">-</div>
+
+          <div class="actions">
+            <a href="#" id="backToQuoteBtn" class="btn">견적으로 돌아가기</a>
+            <button type="submit" class="btn btn-primary">상담 예약 접수</button>
           </div>
-          <div class="info-item">
-            <div class="label">유형별 추가 요청</div>
-            <div class="value" id="detailText">-</div>
-          </div>
-          <div class="info-item">
-            <div class="label">상태</div>
-            <div class="value" id="statusText">-</div>
-          </div>
-          <div class="info-item">
-            <div class="label">문의번호</div>
-            <div class="value" id="inquiryIdText">-</div>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
 
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4402W4vt9zmj3s3zEmhQogLCMvYByzvdAKlrtqWr8LQQx69cjS3gg-6PvnNM2VAcs/exec';
-
-    function formatWon(num) {
-      return Number(num || 0).toLocaleString('ko-KR') + '원';
-    }
+    const SITE_BASE_URL = 'https://wanghyun.github.io/hanbit-request-form/';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4402W4vt9zmj3s3zEmhQogLCMvYByzvdAKlrqWr8LQ0x69cjS3gg-6PvnNM2VAcs/exec';
 
     const params = new URLSearchParams(location.search);
     const quoteId = params.get('quote') || '';
 
-    async function loadQuote() {
+    async function loadQuoteInfo() {
       if (!quoteId) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('error').style.display = 'block';
+        alert('견적번호가 없습니다.');
+        location.href = SITE_BASE_URL + 'index.html';
         return;
       }
 
@@ -227,24 +345,23 @@
 
         document.getElementById('content').style.display = 'block';
 
-        document.getElementById('quoteIdBadge').textContent = quote.quote_id || quoteId;
-        document.getElementById('supplyAmountText').textContent = formatWon(quote.supply_amount);
-        document.getElementById('vatAmountText').textContent = formatWon(quote.vat_amount);
-        document.getElementById('totalAmountText').textContent = formatWon(quote.total_price);
+        document.getElementById('quoteIdText').textContent = quote.quote_id || quoteId;
+        document.getElementById('companyNameText').textContent = inquiry.company_name || quote.company_name || '-';
+        document.getElementById('managerNameText').textContent = inquiry.manager_name || '-';
+        document.getElementById('phoneText').textContent = inquiry.phone || '-';
+        document.getElementById('phoneReadonly').textContent = inquiry.phone || '-';
 
-        document.getElementById('companyNameText').textContent = quote.company_name || inquiry.company_name || '-';
-        document.getElementById('siteTypeText').textContent = quote.site_type_label || '-';
-        document.getElementById('featuresText').textContent = quote.selected_features || inquiry.features || '-';
-        document.getElementById('detailText').textContent = quote.site_specific_detail || inquiry.site_specific_detail || '-';
-        document.getElementById('statusText').textContent = quote.status || '-';
-        document.getElementById('inquiryIdText').textContent = quote.inquiry_id || '-';
+        document.getElementById('quoteIdInput').value = quote.quote_id || quoteId;
+        document.getElementById('inquiryIdInput').value = quote.inquiry_id || '';
+        document.getElementById('companyNameInput').value = inquiry.company_name || quote.company_name || '';
+        document.getElementById('managerNameInput').value = inquiry.manager_name || '';
+        document.getElementById('phoneInput').value = inquiry.phone || '';
+        document.getElementById('emailInput').value = inquiry.email || '';
 
-        document.getElementById('pdfBtn').href = quote.pdf_url || '#';
-        const SITE_BASE_URL = 'https://wanghyun.github.io/hanbit-request-form/';
-        const APPS_SCRIPT_URL = '여기에_실제_앱스스크립트_URL';
-        
         document.getElementById('backToQuoteBtn').href =
           SITE_BASE_URL + 'quote.html?quote=' + encodeURIComponent(quote.quote_id || quoteId);
+
+        document.getElementById('reserveForm').action = APPS_SCRIPT_URL;
 
       } catch (err) {
         document.getElementById('loading').style.display = 'none';
@@ -252,7 +369,7 @@
       }
     }
 
-    loadQuote();
+    loadQuoteInfo();
   </script>
 </body>
 </html>
