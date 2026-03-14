@@ -4,98 +4,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>견적 조회</title>
+  <meta name="description" content="자동 생성된 예상 견적 정보와 PDF를 다시 확인할 수 있습니다." />
   <style>
+    :root {
+      --primary: #1946b9;
+      --primary-dark: #143894;
+      --primary-light: #eef4ff;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --subtext: #6b7280;
+      --line: #dbe4ef;
+      --shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
-      background: #f5f7fb;
-      color: #1f2937;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
     }
+
     .wrap {
       max-width: 980px;
       margin: 60px auto;
-      padding: 0 20px;
+      padding: 0 20px 40px;
     }
-    .top-card, .info-card {
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
+
+    .top-card,
+    .info-card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
       padding: 28px;
       margin-bottom: 20px;
     }
+
     .top-title {
       font-size: 30px;
       font-weight: 900;
       margin-bottom: 8px;
+      line-height: 1.2;
     }
+
     .top-desc {
-      color: #6b7280;
+      color: var(--subtext);
       margin-bottom: 24px;
+      font-size: 15px;
     }
+
     .quote-id {
       display: inline-block;
       padding: 10px 16px;
-      background: #eef4ff;
-      color: #1946b9;
+      background: var(--primary-light);
+      color: var(--primary);
       font-size: 14px;
       font-weight: 800;
       border-radius: 999px;
       margin-bottom: 20px;
     }
+
     .price-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 14px;
+      margin-bottom: 22px;
     }
+
     .price-box {
-      border: 1px solid #dbe4ef;
+      border: 1px solid var(--line);
       border-radius: 18px;
       padding: 18px;
       background: #fff;
     }
+
     .price-label {
       font-size: 13px;
-      color: #6b7280;
+      color: var(--subtext);
       margin-bottom: 8px;
     }
+
     .price-value {
       font-size: 28px;
       font-weight: 900;
-      color: #1946b9;
+      color: var(--primary);
+      line-height: 1.2;
     }
-    .section-title {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 16px;
-      color: #1946b9;
-    }
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-    .info-item {
-      border: 1px solid #e4e9f1;
-      border-radius: 16px;
-      padding: 16px;
-      background: #fafcff;
-    }
-    .info-item .label {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 6px;
-    }
-    .info-item .value {
-      font-size: 15px;
-      font-weight: 700;
-      white-space: pre-line;
-    }
+
     .actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin-top: 24px;
+      margin-top: 4px;
     }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -108,220 +118,95 @@
       border: 1px solid #d9e1ec;
       background: #fff;
       color: #1f2937;
+      cursor: pointer;
+      transition: 0.2s ease;
     }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
     .btn-primary {
-      background: #1946b9;
-      border-color: #1946b9;
+      background: var(--primary);
+      border-color: var(--primary);
       color: #fff;
+      box-shadow: 0 12px 24px rgba(25, 70, 185, 0.18);
     }
-    .loading, .error {
-      padding: 40px 20px;
-      text-align: center;
-      color: #6b7280;
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
-    }
-    @media (max-width: 860px) {
-      .price-grid,
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <div id="loading" class="loading">견적 정보를 불러오는 중입니다...</div>
-    <div id="error" class="error" style="display:none;">견적 정보를 찾을 수 없습니다.</div>
 
-    <div id="content" style="display:none;">
-      <div class="top-card">
-        <div class="top-title">견적 확인</div>
-        <div class="top-desc">자동 생성된 예상 견적 정보와 PDF를 다시 확인할 수 있습니다.</div>
-        <div class="quote-id" id="quoteIdBadge">견적번호</div>
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
 
-        <div class="price-grid">
-          <div class="price-box">
-            <div class="price-label">공급가액</div>
-            <div class="price-value" id="supplyAmountText">0원</div>
-          </div>
-          <div class="price-box">
-            <div class="price-label">부가가치세(VAT)</div>
-            <div class="price-value" id="vatAmountText">0원</div>
-          </div>
-          <div class="price-box">
-            <div class="price-label">총 견적(VAT 포함)</div>
-            <div class="price-value" id="totalAmountText">0원</div>
-          </div>
-        </div>
-
-        <div class="actions">
-          <a href="#" target="_blank" id="pdfBtn" class="btn">PDF 견적서 보기</a>
-          <a href="#" id="reserveBtn" class="btn btn-primary">상담 예약하기</a>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="section-title">기본 정보</div>
-        <div class="info-grid">
-          <div class="info-item">
-            <div class="label">업체명</div>
-            <div class="value" id="companyNameText">-</div>
-          </div>
-          <div class="info-item">
-            <div class="label">사이트 유형</div>
-            <div class="value" id="siteTypeText">-</div>
-          </div>
-          <div class="info-item">
-            <div class="label">선택 기능</div>
-            <div class="value" id="featuresText">-</div>
-          </div>
-          <div class="info-item">
-            <div class="label">유형별 추가 요청</div>
-            <div class="value" id="detailText">-</div>
-          </div>
-          <div class="info-item">
-            <div class="label">상태</div>
-            <div class="value" id="statusText">-</div>
-          </div>
-          <div class="info-item">
-            <div class="label">문의번호</div>
-            <div class="value" id="inquiryIdText">-</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>견적 조회</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
-      background: #f5f7fb;
-      color: #1f2937;
-    }
-    .wrap {
-      max-width: 980px;
-      margin: 60px auto;
-      padding: 0 20px;
-    }
-    .top-card, .info-card {
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
-      padding: 28px;
-      margin-bottom: 20px;
-    }
-    .top-title {
-      font-size: 30px;
-      font-weight: 900;
-      margin-bottom: 8px;
-    }
-    .top-desc {
-      color: #6b7280;
-      margin-bottom: 24px;
-    }
-    .quote-id {
-      display: inline-block;
-      padding: 10px 16px;
-      background: #eef4ff;
-      color: #1946b9;
-      font-size: 14px;
-      font-weight: 800;
-      border-radius: 999px;
-      margin-bottom: 20px;
-    }
-    .price-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .price-box {
-      border: 1px solid #dbe4ef;
-      border-radius: 18px;
-      padding: 18px;
-      background: #fff;
-    }
-    .price-label {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 8px;
-    }
-    .price-value {
-      font-size: 28px;
-      font-weight: 900;
-      color: #1946b9;
-    }
     .section-title {
       font-size: 20px;
       font-weight: 800;
       margin-bottom: 16px;
-      color: #1946b9;
+      color: var(--primary);
     }
+
     .info-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
+
     .info-item {
       border: 1px solid #e4e9f1;
       border-radius: 16px;
       padding: 16px;
       background: #fafcff;
+      min-height: 92px;
     }
+
     .info-item .label {
       font-size: 13px;
-      color: #6b7280;
+      color: var(--subtext);
       margin-bottom: 6px;
     }
+
     .info-item .value {
       font-size: 15px;
       font-weight: 700;
       white-space: pre-line;
+      word-break: break-word;
     }
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 24px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 52px;
-      padding: 0 22px;
-      border-radius: 14px;
-      font-weight: 800;
-      text-decoration: none;
-      border: 1px solid #d9e1ec;
-      background: #fff;
-      color: #1f2937;
-    }
-    .btn-primary {
-      background: #1946b9;
-      border-color: #1946b9;
-      color: #fff;
-    }
-    .loading, .error {
+
+    .loading,
+    .error {
       padding: 40px 20px;
       text-align: center;
-      color: #6b7280;
+      color: var(--subtext);
       background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
     }
+
+    .error {
+      display: none;
+      color: #b42318;
+    }
+
     @media (max-width: 860px) {
       .price-grid,
       .info-grid {
         grid-template-columns: 1fr;
+      }
+
+      .wrap {
+        margin: 30px auto;
+      }
+
+      .top-card,
+      .info-card {
+        padding: 22px 18px;
+      }
+
+      .top-title {
+        font-size: 26px;
+      }
+
+      .price-value {
+        font-size: 24px;
       }
     }
   </style>
@@ -329,7 +214,7 @@
 <body>
   <div class="wrap">
     <div id="loading" class="loading">견적 정보를 불러오는 중입니다...</div>
-    <div id="error" class="error" style="display:none;">견적 정보를 찾을 수 없습니다.</div>
+    <div id="error" class="error">견적 정보를 찾을 수 없습니다.</div>
 
     <div id="content" style="display:none;">
       <div class="top-card">
@@ -391,15 +276,38 @@
   </div>
 
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4402W4vt9zmj3s3zEmhQogLCMvYByzvdAKlrtqWr8LQQx69cjS3gg-6PvnNM2VAcs/exec';
+    /*
+      역할:
+      사이트 페이지 이동용 기본 주소
+    */
+    const SITE_BASE_URL = 'https://wanghyun.github.io/hanbit-request-form/';
 
+    /*
+      역할:
+      Apps Script 데이터 조회/저장용 웹앱 주소
+    */
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4402W4vt9zmj3s3zEmhQogLCMvYByzvdAKlrqWr8LQ0x69cjS3gg-6PvnNM2VAcs/exec';
+
+    /*
+      역할:
+      원화 포맷
+    */
     function formatWon(num) {
       return Number(num || 0).toLocaleString('ko-KR') + '원';
     }
 
+    /*
+      역할:
+      URL에서 quote 파라미터 읽기
+      예: quote.html?quote=QT-20260315-8924
+    */
     const params = new URLSearchParams(location.search);
     const quoteId = params.get('quote') || '';
 
+    /*
+      역할:
+      견적 정보 조회 후 화면에 출력
+    */
     async function loadQuote() {
       if (!quoteId) {
         document.getElementById('loading').style.display = 'none';
@@ -423,36 +331,39 @@
 
         document.getElementById('content').style.display = 'block';
 
+        /*
+          역할:
+          상단 금액 카드 채우기
+        */
         document.getElementById('quoteIdBadge').textContent = quote.quote_id || quoteId;
         document.getElementById('supplyAmountText').textContent = formatWon(quote.supply_amount);
         document.getElementById('vatAmountText').textContent = formatWon(quote.vat_amount);
         document.getElementById('totalAmountText').textContent = formatWon(quote.total_price);
 
-        document.getElementById('companyNameText').textContent = quote.company_name || inquiry.company_name || '-';
+        /*
+          역할:
+          하단 기본 정보 채우기
+        */
+        document.getElementById('companyNameText').textContent = inquiry.company_name || quote.company_name || '-';
         document.getElementById('siteTypeText').textContent = quote.site_type_label || '-';
         document.getElementById('featuresText').textContent = quote.selected_features || inquiry.features || '-';
         document.getElementById('detailText').textContent = quote.site_specific_detail || inquiry.site_specific_detail || '-';
         document.getElementById('statusText').textContent = quote.status || '-';
         document.getElementById('inquiryIdText').textContent = quote.inquiry_id || '-';
 
+        /*
+          역할:
+          버튼 링크 연결
+        */
         document.getElementById('pdfBtn').href = quote.pdf_url || '#';
-        const SITE_BASE_URL = 'https://wanghyun.github.io/hanbit-request-form/';
-        const APPS_SCRIPT_URL = '여기에_실제_앱스스크립트_URL';
-        
-        document.getElementById('backToQuoteBtn').href =
-          SITE_BASE_URL + 'quote.html?quote=' + encodeURIComponent(quote.quote_id || quoteId);
+        document.getElementById('reserveBtn').href =
+          SITE_BASE_URL + 'reserve.html?quote=' + encodeURIComponent(quote.quote_id || quoteId);
 
       } catch (err) {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('error').style.display = 'block';
       }
     }
-
-    loadQuote();
-  </script>
-</body>
-</html>
-
 
     loadQuote();
   </script>
