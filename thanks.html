@@ -144,7 +144,9 @@
 
     if (quoteId) {
       quoteText.textContent = quoteId;
-      quoteBtn.href = './quote.html?quote=' + encodeURIComponent(quoteId);
+      const SITE_BASE_URL = 'https://wanghyun.github.io/hanbit-request-form/';
+
+      quoteBtn.href = SITE_BASE_URL + 'quote.html?quote=' + encodeURIComponent(quoteId);
     } else {
       quoteText.textContent = '견적번호가 없습니다';
       quoteBtn.href = './index.html';
