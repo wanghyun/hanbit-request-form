@@ -240,7 +240,11 @@
         document.getElementById('inquiryIdText').textContent = quote.inquiry_id || '-';
 
         document.getElementById('pdfBtn').href = quote.pdf_url || '#';
-        document.getElementById('reserveBtn').href = './reserve.html?quote=' + encodeURIComponent(quote.quote_id || quoteId);
+        const SITE_BASE_URL = 'https://wanghyun.github.io/hanbit-request-form/';
+        const APPS_SCRIPT_URL = '여기에_실제_앱스스크립트_URL';
+        
+        document.getElementById('reserveBtn').href =
+          SITE_BASE_URL + 'reserve.html?quote=' + encodeURIComponent(quote.quote_id || quoteId);
 
       } catch (err) {
         document.getElementById('loading').style.display = 'none';
