@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+<meta charset="UTF-8">
+<title>견적 조회</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f7fb;
+}
+
+.container{
+max-width:700px;
+margin:80px auto;
+background:white;
+padding:40px;
+border-radius:10px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.title{
+font-size:26px;
+margin-bottom:20px;
+}
+
+.price{
+font-size:28px;
+font-weight:bold;
+color:#2f6fed;
+}
+
+.row{
+margin:10px 0;
+}
+
+.btn{
+display:inline-block;
+padding:12px 20px;
+background:#2f6fed;
+color:white;
+text-decoration:none;
+border-radius:6px;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="title">견적 조회</div>
+
+<div class="row">견적번호 : <span id="quote_id"></span></div>
+
+<div class="row">공급가액 : <span id="supply"></span></div>
+
+<div class="row">VAT : <span id="vat"></span></div>
+
+<div class="row price">총 견적 : <span id="total"></span></div>
+
+<a id="pdf_link" class="btn" target="_blank">PDF 견적서 보기</a>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(location.search);
+const quoteId = params.get("quote");
+
+fetch("1pXdqqP4IsvvwtbVKLPKA3e1J5vZr0xYT4Tm0mirZTMLRm7P-Mxi-oUfz?quote="+quoteId)
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("quote_id").innerText=data.quote_id;
+
+document.getElementById("supply").innerText=data.supply_amount.toLocaleString()+"원";
+
+document.getElementById("vat").innerText=data.vat_amount.toLocaleString()+"원";
+
+document.getElementById("total").innerText=data.total_price.toLocaleString()+"원";
+
+document.getElementById("pdf_link").href=data.pdf_url;
+
+});
+
+</script>
+
+</body>
+</html>
