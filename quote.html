@@ -137,6 +137,12 @@
       background: var(--primary-dark);
     }
 
+    .btn[aria-disabled="true"] {
+      opacity: 0.55;
+      pointer-events: none;
+      cursor: default;
+    }
+
     .section-title {
       font-size: 20px;
       font-weight: 800;
@@ -238,8 +244,8 @@
         </div>
 
         <div class="actions">
-          <a href="#" target="_blank" id="pdfBtn" class="btn">PDF 견적서 보기</a>
-          <a href="#" id="reserveBtn" class="btn btn-primary">상담 예약하기</a>
+          <a href="#" target="_blank" id="pdfBtn" class="btn" aria-disabled="true">PDF 견적서 보기</a>
+          <a href="#" id="reserveBtn" class="btn btn-primary" aria-disabled="true">상담 예약하기</a>
         </div>
       </div>
 
@@ -274,25 +280,27 @@
       </div>
     </div>
   </div>
-  <script src="./config.js"></script>
+
+  <!-- 역할:
+       공통 설정 파일 로드
+       Apps Script URL, 사이트명, 연락처 등을 여기서 공통 관리 -->
+  <script src="./config.js?v=20260315"></script>
+
   <script>
     /*
       역할:
       사이트 페이지 이동용 기본 주소
+      현재 quote.html이 있는 폴더 기준으로 reserve.html 이동 주소를 만든다.
     */
-    const SITE_BASE_URL = 'https://wanghyun.github.io/hanbit-request-form/';
+    const SITE_BASE_URL = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
 
-    /**
-     * 역할:
-     * 공통 설정 파일에서 Apps Script URL 불러오기
-     */
-    const APPS_SCRIPT_URL = window.APP_CONFIG.APPS_SCRIPT_URL;
-  
-    async function loadQuote(quoteId) {
-      const url = APPS_SCRIPT_URL + '?mode=quote&quote=' + encodeURIComponent(quoteId);
-      const res = await fetch(url);
-      return await res.json();
-    }
+    /*
+      역할:
+      공통 설정 파일에서 Apps Script 웹앱 주소 읽기
+    */
+    const APPS_SCRIPT_URL = window.APP_CONFIG && window.APP_CONFIG.APPS_SCRIPT_URL
+      ? window.APP_CONFIG.APPS_SCRIPT_URL
+      : '';
 
     /*
       역할:
@@ -307,71 +315,157 @@
       URL에서 quote 파라미터 읽기
       예: quote.html?quote=QT-20260315-8924
     */
-    const params = new URLSearchParams(location.search);
-    const quoteId = params.get('quote') || '';
+    function getQuoteIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('quote') || '';
+    }
 
     /*
       역할:
-      견적 정보 조회 후 화면에 출력
+      로딩 영역 숨기기
     */
-    async function loadQuote() {
-      if (!quoteId) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('error').style.display = 'block';
-        return;
-      }
+    function hideLoading() {
+      document.getElementById('loading').style.display = 'none';
+    }
 
-      try {
-        const res = await fetch(APPS_SCRIPT_URL + '?mode=quote&quote=' + encodeURIComponent(quoteId));
-        const data = await res.json();
+    /*
+      역할:
+      에러 메시지 표시
+    */
+    function showError(message) {
+      hideLoading();
+      const errorEl = document.getElementById('error');
+      errorEl.textContent = message || '견적 정보를 찾을 수 없습니다.';
+      errorEl.style.display = 'block';
+    }
 
-        document.getElementById('loading').style.display = 'none';
+    /*
+      역할:
+      버튼 활성화/비활성화 처리
+    */
+    function setButtonState(el, enabled, hrefValue) {
+      if (!el) return;
 
-        if (!data.success) {
-          document.getElementById('error').style.display = 'block';
-          return;
+      if (enabled) {
+        el.setAttribute('aria-disabled', 'false');
+        if (hrefValue) {
+          el.href = hrefValue;
         }
-
-        const quote = data.quote || {};
-        const inquiry = data.inquiry || {};
-
-        document.getElementById('content').style.display = 'block';
-
-        /*
-          역할:
-          상단 금액 카드 채우기
-        */
-        document.getElementById('quoteIdBadge').textContent = quote.quote_id || quoteId;
-        document.getElementById('supplyAmountText').textContent = formatWon(quote.supply_amount);
-        document.getElementById('vatAmountText').textContent = formatWon(quote.vat_amount);
-        document.getElementById('totalAmountText').textContent = formatWon(quote.total_price);
-
-        /*
-          역할:
-          하단 기본 정보 채우기
-        */
-        document.getElementById('companyNameText').textContent = inquiry.company_name || quote.company_name || '-';
-        document.getElementById('siteTypeText').textContent = quote.site_type_label || '-';
-        document.getElementById('featuresText').textContent = quote.selected_features || inquiry.features || '-';
-        document.getElementById('detailText').textContent = quote.site_specific_detail || inquiry.site_specific_detail || '-';
-        document.getElementById('statusText').textContent = quote.status || '-';
-        document.getElementById('inquiryIdText').textContent = quote.inquiry_id || '-';
-
-        /*
-          역할:
-          버튼 링크 연결
-        */
-        document.getElementById('pdfBtn').href = quote.pdf_url || '#';
-        document.getElementById('reserveBtn').href =
-          SITE_BASE_URL + 'reserve.html?quote=' + encodeURIComponent(quote.quote_id || quoteId);
-
-      } catch (err) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('error').style.display = 'block';
+      } else {
+        el.setAttribute('aria-disabled', 'true');
+        el.href = '#';
       }
     }
 
-    loadQuote();
+    /*
+      역할:
+      화면에 견적 정보 출력
+    */
+    function renderQuoteData(data, fallbackQuoteId) {
+      const quote = data.quote || {};
+      const inquiry = data.inquiry || {};
+
+      document.getElementById('content').style.display = 'block';
+
+      /*
+        역할:
+        상단 금액 카드 채우기
+      */
+      document.getElementById('quoteIdBadge').textContent = quote.quote_id || fallbackQuoteId || '-';
+      document.getElementById('supplyAmountText').textContent = formatWon(quote.supply_amount);
+      document.getElementById('vatAmountText').textContent = formatWon(quote.vat_amount);
+      document.getElementById('totalAmountText').textContent = formatWon(quote.total_price);
+
+      /*
+        역할:
+        하단 기본 정보 채우기
+      */
+      document.getElementById('companyNameText').textContent = inquiry.company_name || quote.company_name || '-';
+      document.getElementById('siteTypeText').textContent = quote.site_type_label || '-';
+      document.getElementById('featuresText').textContent = quote.selected_features || inquiry.features || '-';
+      document.getElementById('detailText').textContent = quote.site_specific_detail || inquiry.site_specific_detail || '-';
+      document.getElementById('statusText').textContent = quote.status || '-';
+      document.getElementById('inquiryIdText').textContent = quote.inquiry_id || '-';
+
+      /*
+        역할:
+        PDF 버튼 링크 연결
+      */
+      if (quote.pdf_url) {
+        setButtonState(document.getElementById('pdfBtn'), true, quote.pdf_url);
+      } else {
+        setButtonState(document.getElementById('pdfBtn'), false);
+      }
+
+      /*
+        역할:
+        상담 예약 버튼 링크 연결
+      */
+      const reserveUrl = SITE_BASE_URL + 'reserve.html?quote=' + encodeURIComponent(quote.quote_id || fallbackQuoteId || '');
+      setButtonState(document.getElementById('reserveBtn'), true, reserveUrl);
+    }
+
+    /*
+      역할:
+      Apps Script JSONP 응답을 받는 전역 콜백 함수
+      Apps Script doGet에서 callback=handleQuoteResponse 로 감싸서 반환해야 한다.
+    */
+    function handleQuoteResponse(data) {
+      hideLoading();
+
+      if (!data || data.success === false) {
+        showError((data && data.message) || '견적 정보를 찾을 수 없습니다.');
+        return;
+      }
+
+      if (!data.quote) {
+        showError('견적 정보를 찾을 수 없습니다.');
+        return;
+      }
+
+      const quoteId = getQuoteIdFromUrl();
+      renderQuoteData(data, quoteId);
+    }
+
+    /*
+      역할:
+      JSONP 방식으로 견적 정보 요청
+      fetch 대신 script 태그를 동적으로 삽입해 CORS 문제를 피한다.
+    */
+    function loadQuoteByJsonp() {
+      const quoteId = getQuoteIdFromUrl();
+
+      if (!quoteId) {
+        showError('견적번호가 없습니다.');
+        return;
+      }
+
+      if (!APPS_SCRIPT_URL) {
+        showError('설정 파일에서 Apps Script 주소를 찾을 수 없습니다.');
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src =
+        APPS_SCRIPT_URL +
+        '?mode=quote' +
+        '&quote=' + encodeURIComponent(quoteId) +
+        '&callback=handleQuoteResponse';
+
+      script.onerror = function () {
+        showError('견적 정보를 불러오는 중 오류가 발생했습니다.');
+      };
+
+      document.body.appendChild(script);
+    }
+
+    /*
+      역할:
+      페이지 진입 시 견적 로드 시작
+    */
+    document.addEventListener('DOMContentLoaded', function () {
+      loadQuoteByJsonp();
+    });
   </script>
 </body>
 </html>
