@@ -1386,8 +1386,23 @@
     </div>
   </div>
   <script src="./config.js?v=20260315"></script>
+
   <script>
-    /*
+    document.addEventListener('DOMContentLoaded', function () {
+      const appsScriptUrl = window.APP_CONFIG.APPS_SCRIPT_URL;
+  
+      const quoteForm = document.getElementById('quoteForm');
+      const reserveForm = document.getElementById('reserveForm');
+  
+      if (quoteForm) {
+        quoteForm.action = appsScriptUrl;
+      }
+  
+      if (reserveForm) {
+        reserveForm.action = appsScriptUrl;
+      }
+    });
+      /*
       역할:
       프론트 미리보기용 단가표
       백엔드 Apps Script 기준과 최대한 유사하게 맞춘 값
