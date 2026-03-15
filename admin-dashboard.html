@@ -420,9 +420,21 @@
       </div>
     </main>
   </div>
-
+  <script src="./config.js"></script>
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4402W4vt9zmj3s3zEmhQogLCMvYByzvdAKlrtqWr8LQQx69cjS3gg-6PvnNM2VAcs/exec';
+    /**
+     * 역할:
+     * 공통 설정 파일에서 Apps Script URL과 localStorage 키 이름을 불러오기
+     */
+    const APPS_SCRIPT_URL = window.APP_CONFIG.APPS_SCRIPT_URL;
+    const ADMIN_KEY_STORAGE_NAME = window.APP_CONFIG.ADMIN_KEY_STORAGE_NAME;
+  
+    async function loadDashboard() {
+      const adminKey = localStorage.getItem(ADMIN_KEY_STORAGE_NAME) || '';
+      const url = APPS_SCRIPT_URL + '?mode=admin_dashboard&admin_key=' + encodeURIComponent(adminKey);
+      const res = await fetch(url);
+      return await res.json();
+    }
 
     function formatWon(value) {
       return Number(value || 0).toLocaleString('ko-KR') + '원';
