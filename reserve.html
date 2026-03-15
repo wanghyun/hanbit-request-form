@@ -246,7 +246,7 @@
           <div><strong>연락처</strong> : <span id="phoneText">확인 중...</span></div>
         </div>
       </div>
-
+      
       <div class="form-card">
         <h2 class="section-title">예약 정보 입력</h2>
 
@@ -314,10 +314,23 @@
       </div>
     </div>
   </div>
-
+  <script src="./config.js"></script>
   <script>
   const SITE_BASE_URL = 'https://wanghyun.github.io/hanbit-request-form/';
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4402W4vt9zmj3s3zEmhQogLCMvYByzvdAKlrtqWr8LQQx69cjS3gg-6PvnNM2VAcs/exec';
+    /**
+   * 역할:
+   * 공통 설정 파일에서 Apps Script URL 불러오기
+   */
+  const APPS_SCRIPT_URL = window.APP_CONFIG.APPS_SCRIPT_URL;
+
+  async function submitReservation(payload) {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+
+    return await res.json();
+  }
 
   const params = new URLSearchParams(location.search);
   const quoteId = params.get('quote') || '';
