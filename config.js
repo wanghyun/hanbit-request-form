@@ -5,8 +5,8 @@
  */
 window.APP_CONFIG = {
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwADE5wJHtNwKB-Y73cJOl_1JrM7WEdGOki9_Xg9XqETUQAv9GXmJTwaFITawhoTu1S/exec',
-  SITE_NAME: '외주 견적 SaaS',
+  SITE_NAME: '웹사이트 외주 견적 신청서',
   ADMIN_KEY_STORAGE_NAME: 'HB_ADMIN_KEY',
-  COMPANY_PHONE: '010-5589-9856',
-  COMPANY_EMAIL: 'example@example.com'
+  COMPANY_PHONE: '010-5008-8985',
+  COMPANY_EMAIL: 'wanghyun84@naver.com'
 };
