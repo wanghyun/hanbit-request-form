@@ -1386,20 +1386,22 @@
     </div>
   </div>
   <script src="./config.js?v=20260315"></script>
-
+  
   <script>
+    /**
+     * 역할:
+     * 공통 설정 파일의 Apps Script URL을
+     * index 페이지의 quoteForm action에 반영한다.
+     */
     document.addEventListener('DOMContentLoaded', function () {
-      const appsScriptUrl = window.APP_CONFIG.APPS_SCRIPT_URL;
+      const appsScriptUrl = window.APP_CONFIG && window.APP_CONFIG.APPS_SCRIPT_URL
+        ? window.APP_CONFIG.APPS_SCRIPT_URL
+        : '';
   
       const quoteForm = document.getElementById('quoteForm');
-      const reserveForm = document.getElementById('reserveForm');
   
-      if (quoteForm) {
+      if (quoteForm && appsScriptUrl) {
         quoteForm.action = appsScriptUrl;
-      }
-  
-      if (reserveForm) {
-        reserveForm.action = appsScriptUrl;
       }
     });
       /*
