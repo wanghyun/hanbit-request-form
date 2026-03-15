@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>관리자 대시보드</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    :root {
+      --primary: #1946b9;
+      --primary-dark: #143894;
+      --primary-light: #eef4ff;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --subtext: #6b7280;
+      --line: #dbe4ef;
+      --shadow: 0 14px 40px rgba(14, 30, 62, 0.10);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #1946b9 0%, #153b99 100%);
+      color: #fff;
+      padding: 28px 18px;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 24px;
+    }
+
+    .brand-sub {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 28px;
+    }
+
+    .nav a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 13px 14px;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      background: rgba(255,255,255,0.08);
+      font-weight: 700;
+    }
+
+    .nav a.active {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .main {
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .top-title {
+      font-size: 32px;
+      font-weight: 900;
+      margin: 0;
+    }
+
+    .top-desc {
+      margin-top: 8px;
+      color: var(--subtext);
+      font-size: 14px;
+    }
+
+    .auth-box {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: #fff;
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .auth-box input {
+      width: 220px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 0 16px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(25, 70, 185, 0.18);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .kpi-label {
+      font-size: 13px;
+      color: var(--subtext);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .kpi-value {
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 900;
+      margin: 0 0 16px;
+      color: var(--primary);
+    }
+
+    .section-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .mini-link {
+      font-size: 13px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 11px 8px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      font-size: 12px;
+      color: var(--subtext);
+      font-weight: 800;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #eef4ff;
+      color: var(--primary);
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .quick-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid #e6ebf2;
+      border-radius: 18px;
+      padding: 20px;
+      background: #fff;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .quick-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .quick-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .quick-desc {
+      font-size: 14px;
+      color: var(--subtext);
+      line-height: 1.6;
+    }
+
+    .loading,
+    .message {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--subtext);
+    }
+
+    .message.error {
+      color: #b42318;
+    }
+
+    @media (max-width: 1200px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        padding: 20px;
+      }
+      .main {
+        padding: 20px;
+      }
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .auth-box {
+        width: 100%;
+      }
+      .auth-box input {
+        width: 100%;
+      }
+      .quick-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">외주견적 SaaS</div>
+      <div class="brand-sub">관리자 운영 대시보드</div>
+
+      <nav class="nav">
+        <a href="./admin-dashboard.html" class="active">대시보드</a>
+        <a href="./admin-quotes.html">견적 관리</a>
+        <a href="./admin-reservations.html">예약 관리</a>
+        <a href="./admin-pricing.html">단가표 관리</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1 class="top-title">관리자 대시보드</h1>
+          <div class="top-desc">
+            전체 견적, 예약, 진행 현황을 한눈에 확인할 수 있습니다.
+          </div>
+        </div>
+
+        <div class="auth-box">
+          <input type="password" id="adminKeyInput" placeholder="관리자 키 입력" />
+          <button class="btn btn-primary" id="loadBtn">불러오기</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card">
+          <div class="kpi-label">전체 견적 수</div>
+          <div class="kpi-value" id="totalQuotes">0</div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">오늘 신규 견적</div>
+          <div class="kpi-value" id="todayQuotes">0</div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">전체 상담 예약 수</div>
+          <div class="kpi-value" id="totalReservations">0</div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">진행 중 견적 수</div>
+          <div class="kpi-value" id="activeQuotes">0</div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="card">
+          <div class="section-top">
+            <div class="section-title">최근 견적 5건</div>
+            <a href="./admin-quotes.html" class="mini-link">전체 보기</a>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>견적번호</th>
+                <th>업체명</th>
+                <th>금액</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody id="recentQuotesBody">
+              <tr><td colspan="4">데이터를 불러오면 표시됩니다.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="section-top">
+            <div class="section-title">최근 예약 5건</div>
+            <a href="./admin-reservations.html" class="mini-link">전체 보기</a>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>예약번호</th>
+                <th>업체명</th>
+                <th>일정</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody id="recentReservationsBody">
+              <tr><td colspan="4">데이터를 불러오면 표시됩니다.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">빠른 이동</div>
+        <div class="quick-grid">
+          <a class="quick-card" href="./admin-quotes.html">
+            <div class="quick-title">견적 관리</div>
+            <div class="quick-desc">견적 상태 변경, PDF 확인, 메모 저장으로 이어지는 운영 화면</div>
+          </a>
+          <a class="quick-card" href="./admin-reservations.html">
+            <div class="quick-title">예약 관리</div>
+            <div class="quick-desc">상담 접수, 확정, 완료 처리와 예약 메모 관리 화면</div>
+          </a>
+          <a class="quick-card" href="./admin-pricing.html">
+            <div class="quick-title">단가표 관리</div>
+            <div class="quick-desc">기본 제작비와 옵션 단가를 수정하는 관리자 전용 화면</div>
+          </a>
+        </div>
+
+        <div id="message" class="message"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4402W4vt9zmj3s3zEmhQogLCMvYByzvdAKlrtqWr8LQQx69cjS3gg-6PvnNM2VAcs/exec';
+
+    function formatWon(value) {
+      return Number(value || 0).toLocaleString('ko-KR') + '원';
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function setMessage(text, isError = false) {
+      const el = document.getElementById('message');
+      el.textContent = text || '';
+      el.className = isError ? 'message error' : 'message';
+    }
+
+    async function loadDashboard() {
+      const adminKey = document.getElementById('adminKeyInput').value.trim();
+
+      if (!adminKey) {
+        setMessage('관리자 키를 먼저 입력하세요.', true);
+        return;
+      }
+
+      localStorage.setItem('HB_ADMIN_KEY', adminKey);
+      setMessage('데이터를 불러오는 중입니다...');
+
+      try {
+        const url = APPS_SCRIPT_URL + '?mode=admin_dashboard&admin_key=' + encodeURIComponent(adminKey);
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.success) {
+          throw new Error(data.message || '대시보드 데이터를 불러오지 못했습니다.');
+        }
+
+        document.getElementById('totalQuotes').textContent = data.totalQuotes || 0;
+        document.getElementById('todayQuotes').textContent = data.todayQuotes || 0;
+        document.getElementById('totalReservations').textContent = data.totalReservations || 0;
+        document.getElementById('activeQuotes').textContent = data.activeQuotes || 0;
+
+        const quoteRows = (data.recentQuotes || []).map(row => `
+          <tr>
+            <td>${escapeHtml(row.quote_id)}</td>
+            <td>${escapeHtml(row.company_name)}</td>
+            <td>${formatWon(row.total_price)}</td>
+            <td><span class="status-badge">${escapeHtml(row.status || '-')}</span></td>
+          </tr>
+        `).join('');
+
+        const reservationRows = (data.recentReservations || []).map(row => `
+          <tr>
+            <td>${escapeHtml(row.reservation_id)}</td>
+            <td>${escapeHtml(row.company_name)}</td>
+            <td>${escapeHtml(row.preferred_date || '-')} / ${escapeHtml(row.preferred_time || '-')}</td>
+            <td><span class="status-badge">${escapeHtml(row.status || '-')}</span></td>
+          </tr>
+        `).join('');
+
+        document.getElementById('recentQuotesBody').innerHTML =
+          quoteRows || '<tr><td colspan="4">최근 견적이 없습니다.</td></tr>';
+
+        document.getElementById('recentReservationsBody').innerHTML =
+          reservationRows || '<tr><td colspan="4">최근 예약이 없습니다.</td></tr>';
+
+        setMessage('대시보드 데이터를 불러왔습니다.');
+      } catch (error) {
+        console.error(error);
+        setMessage(error.message || '오류가 발생했습니다.', true);
+      }
+    }
+
+    document.getElementById('loadBtn').addEventListener('click', loadDashboard);
+
+    window.addEventListener('DOMContentLoaded', function () {
+      const savedKey = localStorage.getItem('HB_ADMIN_KEY') || '';
+      document.getElementById('adminKeyInput').value = savedKey;
+
+      if (savedKey) {
+        loadDashboard();
+      }
+    });
+  </script>
+</body>
+</html>
